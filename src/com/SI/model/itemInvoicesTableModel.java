@@ -37,5 +37,6 @@ public class itemInvoicesTableModel extends AbstractTableModel {
             case 4 : return purchese.getTotalItems();
             default :   return " ";
           }
+        
     }
 }

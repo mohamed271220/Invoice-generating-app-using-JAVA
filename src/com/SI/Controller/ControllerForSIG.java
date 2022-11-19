@@ -15,10 +15,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class ControllerForSIG implements ActionListener {
 
@@ -84,41 +88,40 @@ public class ControllerForSIG implements ActionListener {
     
     
     private void saveFile() {
-        ArrayList<Invoice> invoicesTemp =frame.getInvoices();
-        String headersCSV="";
-        String itemsCSV="";
-        for(Invoice i:invoicesTemp)
-        {
-        String invoiceSCV= i.returnFileAsCSV();
-        headersCSV +=invoiceSCV;
-        headersCSV +="\n";
-        for(InvoiceLines j:i.getPurcheses())
-        {
-        String lineAsCSV=j.returnFileAsCSV();
-        itemsCSV+=lineAsCSV;
-        itemsCSV+="\n";
-        }
-        }
+            ArrayList<Invoice> invoicesTemp =frame.getInvoices();
+            String headersCSV="";
+            String itemsCSV="";
+            for(Invoice i:invoicesTemp)
+            {
+                String invoiceSCV= i.returnFileAsCSV();
+                headersCSV +=invoiceSCV;
+                headersCSV +="\n";
+                for(InvoiceLines j:i.getPurcheses())
+                {
+                    String lineAsCSV=j.returnFileAsCSV();
+                    itemsCSV+=lineAsCSV;
+                    itemsCSV+="\n";
+                    }
+                    }
          try {
-       JFileChooser fileChooser=new JFileChooser();
-        
+        JFileChooser fileChooser=new JFileChooser();
         int selectedFolder=fileChooser.showOpenDialog(frame);
         if(selectedFolder==JFileChooser.APPROVE_OPTION){
-          File header=fileChooser.getSelectedFile();
-           
-                FileWriter headerFileWriter=new FileWriter(header);
-                headerFileWriter.write(headersCSV);
-                headerFileWriter.flush();
-                headerFileWriter.close();
-            } 
-             selectedFolder=fileChooser.showOpenDialog(frame);
+                    File header=fileChooser.getSelectedFile();
+
+                          FileWriter headerFileWriter=new FileWriter(header);
+                          headerFileWriter.write(headersCSV);
+                          headerFileWriter.flush();
+                          headerFileWriter.close();
+                      } 
+        selectedFolder=fileChooser.showOpenDialog(frame);
              if(selectedFolder==JFileChooser.APPROVE_OPTION){
-              File line=fileChooser.getSelectedFile();
-              
-                FileWriter lineFileWriter=new FileWriter(line);
-                lineFileWriter.write(itemsCSV);
-                lineFileWriter.flush();
-                lineFileWriter.close();
+                    File line=fileChooser.getSelectedFile();
+
+                      FileWriter lineFileWriter=new FileWriter(line);
+                      lineFileWriter.write(itemsCSV);
+                      lineFileWriter.flush();
+                      lineFileWriter.close();
              
              }
         }
@@ -131,23 +134,29 @@ public class ControllerForSIG implements ActionListener {
          try {
         int selectedFile=fileChooser.showOpenDialog(frame);
         if(selectedFile==JFileChooser.APPROVE_OPTION){
-            File headerSample=fileChooser.getSelectedFile();
-            Path headerPath=Paths.get(headerSample.getAbsolutePath());
-               
-            java.util.List <String> headers = Files.readAllLines(headerPath); 
-//            System.out.println(headers);
-            ArrayList<Invoice> invoiceList = new ArrayList<>();
-            for (String header:headers)
-            {
-                String[] headerElement=header.split(",");
-                int invoiceNum=Integer.parseInt(headerElement[0]);
+                        File headerSample=fileChooser.getSelectedFile();
+                        Path headerPath=Paths.get(headerSample.getAbsolutePath());
 
-                String dateOfRelease=headerElement[1];
-                String nameOFCustomer=headerElement[2];
-                Invoice recepit=new Invoice(invoiceNum,dateOfRelease,nameOFCustomer);
-                invoiceList.add(recepit);
-            }
-//            System.out.println("Cheese Point");
+                        java.util.List <String> headers = Files.readAllLines(headerPath); 
+
+                        ArrayList<Invoice> invoiceList = new ArrayList<>();
+                        for (String header:headers)
+                                {   
+                                    try{
+                                            String[] headerElement=header.split(",");
+                                            int invoiceNum=Integer.parseInt(headerElement[0]);
+
+                                            String dateOfRelease=headerElement[1];
+                                            String nameOFCustomer=headerElement[2];
+                                            Invoice recepit=new Invoice(invoiceNum,dateOfRelease,nameOFCustomer);
+                                            invoiceList.add(recepit);
+                                }
+                catch(Exception ex){
+                      ex.printStackTrace();
+                      JOptionPane.showMessageDialog(frame,"Worng Line Format!!","ERROR!",JOptionPane.ERROR_MESSAGE);
+                
+                }
+            }   
         
         int selectedLines =fileChooser.showOpenDialog(frame);
         if(selectedLines==JFileChooser.APPROVE_OPTION){
@@ -155,23 +164,28 @@ public class ControllerForSIG implements ActionListener {
             Path linesPath=Paths.get(linesSample.getAbsolutePath());
             java.util.List <String> lines=Files.readAllLines(linesPath);
             for(String line:lines){
-            String[] lineElement=line.split(",");
-            int invoiceNumber=Integer.parseInt( lineElement[0]);
-            String itemName=lineElement[1];   
-            double itemPrice=Double.parseDouble(lineElement[2]);
-            int numberOfItems=Integer.parseInt( lineElement[3]);
-           
-            Invoice tempInvoice=null;
-            for(Invoice invoice:invoiceList)
-            {
-            if(invoice.getNumberOfInvoice()==invoiceNumber){
-            tempInvoice=invoice;
-            break;
-            }
-            
-            }
+                try{
+                        String[] lineElement=line.split(",");
+                        int invoiceNumber=Integer.parseInt( lineElement[0]);
+                        String itemName=lineElement[1];   
+                        double itemPrice=Double.parseDouble(lineElement[2]);
+                        int numberOfItems=Integer.parseInt( lineElement[3]);
+                        Invoice tempInvoice=null;
+                            for(Invoice invoice:invoiceList)
+                                {
+                                if(invoice.getNumberOfInvoice()==invoiceNumber){
+                                    tempInvoice=invoice;
+                                    break;
+                                }
+
+                        }
             InvoiceLines fullDetailedRecepit = new InvoiceLines(itemName,numberOfItems,itemPrice,tempInvoice);
             tempInvoice.getPurcheses().add(fullDetailedRecepit); //
+                }catch(Exception ex){
+                      ex.printStackTrace();
+                  JOptionPane.showMessageDialog(frame,"Worng File Format!!","ERROR!",JOptionPane.ERROR_MESSAGE);
+                
+                }
             }
         
         }
@@ -186,6 +200,7 @@ public class ControllerForSIG implements ActionListener {
 
          catch (IOException ex) {
                 ex.printStackTrace();
+                  JOptionPane.showMessageDialog(frame,"Worng File Format!!","ERROR!",JOptionPane.ERROR_MESSAGE);
             }
         
     }
@@ -263,15 +278,36 @@ public class ControllerForSIG implements ActionListener {
     headerDialog=null;
     }
     private void createHeaderOK() {
+        DateFormat dateFormate=new SimpleDateFormat("dd-MM-yyyy");
         String date=headerDialog.getDateOfRelease().getText();
         String customerName=headerDialog.getcustomerNameField().getText();
         int noOfInvoice=frame.getNextHeaderNumber();
+        try {
+            String[] unitsDate= date.split("-");
+            if(unitsDate.length<3)
+            {
+               JOptionPane.showMessageDialog(frame,"Enter a valid date","ERROR!",JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+            if ( Integer.parseInt(unitsDate[0])>31||Integer.parseInt(unitsDate[1])>12)
+            {
+             JOptionPane.showMessageDialog(frame,"Enter a valid date","ERROR!",JOptionPane.ERROR_MESSAGE);
+            
+            }
+            else{
         Invoice invoice=new Invoice(noOfInvoice,date,customerName);
         frame.getInvoices().add(invoice);
         frame.getHeaderTableModel().fireTableDataChanged();
         headerDialog.setVisible(false);
         headerDialog.dispose();
-        headerDialog=null;            
+        headerDialog=null;         
+            }
+        }
+        }
+        catch(Exception ex){    
+        JOptionPane.showMessageDialog(frame,"Enter a valid date","ERROR!",JOptionPane.ERROR_MESSAGE);
+                }
+           
     }
 
 }
