@@ -3,9 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/model/Invoice.java</file>
-            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/model/InvoiceLines.java</file>
-            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/View/LayoutForSIG.java</file>
+            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/SI/model/InvoiceLines.java</file>
+            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/SI/View/HeaderItemsDia.java</file>
+            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/SI/Controller/SelectionListener.java</file>
+            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/SI/model/headersInvoicesTableModel.java</file>
+            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/SI/View/LayoutFrameForSIG.java</file>
+            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/SI/Controller/ControllerForSIG.java</file>
+            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/SI/View/HeaderDia.java</file>
+            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/SI/model/itemInvoicesTableModel.java</file>
+            <file>file:/C:/Users/TECHNICAL/Documents/NetBeansProjects/SalesInvoices/src/com/SI/model/Invoice.java</file>
         </group>
     </open-files>
 </project-private>
