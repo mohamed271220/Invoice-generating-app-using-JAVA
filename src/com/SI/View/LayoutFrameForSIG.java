@@ -115,7 +115,7 @@ return ++count;
         saveInvoice.addActionListener(controller);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(0, 102, 204));
+        setBackground(new java.awt.Color(29, 1, 191));
 
         headersTable.setAutoCreateRowSorter(true);
         headersTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -303,7 +303,7 @@ return ++count;
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

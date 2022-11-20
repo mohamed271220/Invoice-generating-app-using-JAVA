@@ -134,12 +134,12 @@ public class ControllerForSIG implements ActionListener {
          try {
         int selectedFile=fileChooser.showOpenDialog(frame);
         if(selectedFile==JFileChooser.APPROVE_OPTION){
-                        File headerSample=fileChooser.getSelectedFile();
-                        Path headerPath=Paths.get(headerSample.getAbsolutePath());
+                File headerSample=fileChooser.getSelectedFile();
+                Path headerPath=Paths.get(headerSample.getAbsolutePath());
 
-                        java.util.List <String> headers = Files.readAllLines(headerPath); 
+                java.util.List <String> headers = Files.readAllLines(headerPath); 
 
-                        ArrayList<Invoice> invoiceList = new ArrayList<>();
+                ArrayList<Invoice> invoiceList = new ArrayList<>();
                         for (String header:headers)
                                 {   
                                     try{
@@ -233,23 +233,24 @@ public class ControllerForSIG implements ActionListener {
          int  highlightedInvoice=  frame.getHeadersTable().getSelectedRow();
          int highlightedRow= frame.getPurchesesTable().getSelectedRow();
         if(highlightedRow != -1 && highlightedInvoice != -1)
-        { 
-           Invoice invTemp=frame.getInvoices().get(highlightedInvoice);
-           invTemp.getPurcheses().remove(highlightedRow);
-           itemInvoicesTableModel itemsTempModel=new itemInvoicesTableModel(invTemp.getPurcheses());
-           frame.getPurchesesTable().setModel(itemsTempModel);
-           itemsTempModel.fireTableDataChanged();
-            frame.getHeaderTableModel().fireTableDataChanged();
-        }
+            { 
+               Invoice invTemp=frame.getInvoices().get(highlightedInvoice);
+               invTemp.getPurcheses().remove(highlightedRow);
+               itemInvoicesTableModel itemsTempModel=new itemInvoicesTableModel(invTemp.getPurcheses());
+               frame.getPurchesesTable().setModel(itemsTempModel);
+               itemsTempModel.fireTableDataChanged();
+                frame.getHeaderTableModel().fireTableDataChanged();
+            }
     }
 
     private void createPurchaseLineOK() {
-         String itemName=itemDialog.getItemNameField().getText();
+         try {
+        String itemName=itemDialog.getItemNameField().getText();
         String stringCount=itemDialog.getItemCountField().getText();
         String stringPrice=itemDialog.getItemPriceField().getText(); 
-         int numOfItems=Integer.parseInt(stringCount);
-          double price=Double.parseDouble(stringPrice);
-            int highlightedInvoice=frame.getHeadersTable().getSelectedRow();
+        int numOfItems=Integer.parseInt(stringCount);
+        double price=Double.parseDouble(stringPrice);
+        int highlightedInvoice=frame.getHeadersTable().getSelectedRow();
                 if(highlightedInvoice !=-1){
                     Invoice invoice =frame.getInvoices().get(highlightedInvoice);
                     InvoiceLines lineTemp= new InvoiceLines(itemName,numOfItems,price,invoice);
@@ -264,7 +265,11 @@ public class ControllerForSIG implements ActionListener {
         itemDialog.dispose();
         itemDialog=null;
            }
-
+    
+    catch(Exception ex){    
+        JOptionPane.showMessageDialog(frame,"Enter Vaild Price or Valid No. of items","ERROR!",JOptionPane.ERROR_MESSAGE);
+                }
+    }
     private void createPurchaseCancel() {
          itemDialog.setVisible(false);
         itemDialog.dispose();
@@ -278,7 +283,7 @@ public class ControllerForSIG implements ActionListener {
     headerDialog=null;
     }
     private void createHeaderOK() {
-        DateFormat dateFormate=new SimpleDateFormat("dd-MM-yyyy");
+      
         String date=headerDialog.getDateOfRelease().getText();
         String customerName=headerDialog.getcustomerNameField().getText();
         int noOfInvoice=frame.getNextHeaderNumber();
